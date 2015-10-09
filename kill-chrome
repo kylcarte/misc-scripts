@@ -1,0 +1,7 @@
+#!/bin/bash
+
+while read -r pr
+do
+    kill -9 $pr
+done < <(chrome-procs)
+

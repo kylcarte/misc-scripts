@@ -1,0 +1,4 @@
+#!/bin/bash
+
+pgrep -f /opt/google/chrome/chrome
+

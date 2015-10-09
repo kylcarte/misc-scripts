@@ -1,0 +1,47 @@
+#!/bin/bash
+
+prg=`basename $0`
+
+function usage {
+    echo "USAGE: $prg <dir>"
+    exit 1
+}
+
+if [ "$#" -lt 1 ]; then
+    usage
+else
+    args=( $@ )
+    dir="${args[0]}"
+    deps=( ${args[@]:1} )
+    for (( i = 0 ; i < ${#deps[@]} ; i++ )); do
+        deps[i]="--dependency='${deps[i]}'"
+    done
+fi
+
+author='Kyle Carter'
+email='kylcarte@indiana.edu'
+language='Haskell2010'
+license='BSD3'
+base_version='>=4.8 && <4.9'
+
+# dry_run=1
+
+cmd="cabal init -n -q \
+    --source-dir=src \
+    --author='$author' \
+    --email='$email' \
+    --language='$language' \
+    --license='$license' \
+    --dependency='base $base_version' \
+    ${deps[@]}"
+
+if [[ $dry_run ]]; then
+    echo $cmd
+else
+    mkdir -p "$dir/src"
+    cd $dir
+    eval $cmd
+    cabal sandbox init
+fi
+
+

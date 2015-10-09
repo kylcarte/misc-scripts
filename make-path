@@ -7,6 +7,10 @@ fi
 path=`path-exists "$1"`
 
 if [[ "$?" -ne 0 ]]; then
-    mkdir -p "$path"
+    echo "Path '$path' does not exist"
+    if confirm -y "Create?"
+    then
+        mkdir -p "$path"
+    fi
 fi
 

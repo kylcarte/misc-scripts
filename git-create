@@ -1,14 +1,26 @@
 #!/bin/bash
 
-if [[ "$#" -lt 1 ]]; then
-    echo "usage: `basename $0` <repo>"
+prg=`basename $0`
+function usage {
+    echo "usage: $prg <repo>"
     exit 1
-fi
+}
+
+case $# in
+1)  ;;
+*)  usage
+    ;;
+esac
 
 repo="$1"
+user=`git config --get github.user`
 
-curl -u 'kylcarte' https://api.github.com/user/repos -d "{\"name\":\"$repo\"}"
-# Remember replace USER with your username and REPO with your repository/application name!
-# git remote add origin git@github.com:kylcarte/$repo.git
-# git push origin master
+if confirm -y "Create github repository '$repo'?"
+then
+    if ! curl -u "$user" https://api.github.com/user/repos -d "{\"name\":\"$repo\"}"
+    then
+        echo "Repository creation failed:"
+        echo "$res"
+    fi
+fi
 

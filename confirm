@@ -1,0 +1,62 @@
+#!/bin/bash
+
+prg=`basename $0`
+function usage {
+    echo "usage: $prg <msg>"
+    exit 1
+}
+
+# Get params
+case $# in
+1)  if [[ "$1" == "-y" ]]; then
+        usage
+    else
+        msg="$1"
+    fi
+    ;;
+2)  if [[ "$1" == "-y" ]]; then
+        default=1
+        msg="$2"
+    else
+        usage
+    fi
+    ;;
+*)  usage
+    ;;
+esac
+
+# Print message
+echo -n "$msg "
+if [[ -n "$default" ]]; then
+    echo "[Y/n]"
+else
+    echo "[y/N]"
+fi
+
+# Get and process response
+read res
+res=`echo "$res" | head -c 1 | tr [A-Z] [a-z]`
+
+function conf_yes {
+    echo "okay."
+    exit 0
+}
+
+function conf_no {
+    echo "nevermind."
+    exit 1
+}
+
+# Exit with conf status
+if [[ -z "$res" ]]; then
+    if [[ -n "$default" ]]; then
+        conf_yes
+    else
+        conf_no
+    fi
+elif [[ "$res" == "y" ]]; then
+    conf_yes
+else
+    conf_no
+fi
+

@@ -1,0 +1,7 @@
+#!/bin/bash
+
+~/builds/gnome-terminal-colors-solarized/set_light.sh
+
+sed -i 's/set bg=.*/set bg=light/' ~/.vimrc
+sed -i 's/tmuxcolors.*/tmuxcolors-light.conf/' ~/.tmux.conf
+

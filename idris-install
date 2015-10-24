@@ -1,0 +1,11 @@
+#!/bin/bash
+
+dir=$(basename $(pwd))
+
+pkg="$dir.ipkg"
+
+set -xe
+
+idris --build   $pkg
+idris --install $pkg
+

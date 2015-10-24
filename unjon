@@ -1,0 +1,26 @@
+#!/bin/bash
+
+files=( $@ )
+
+replace=( 'α' 'a'  \
+          'β' 'b'  \
+          '∷' '::' \
+          '→' '->' \
+          '⇒' '=>' \
+          '←' '<-' \
+          )
+
+for file in ${files[@]}; do
+    echo "Unjonning file '$file'..."
+
+    n=0
+    for (( i=0; i<${#replace[@]}; i+=2 )); do
+        let n+=1
+        old=${replace[i]}
+        new=${replace[i+1]}
+        cmd[n]="-e 's/$old/$new/g'"
+    done
+    cmd="sed -i ${cmd[@]} $file"
+    eval "$cmd"
+done
+
